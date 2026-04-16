@@ -11,63 +11,48 @@ def menu():
         escolha_do_menu= input("Escolha oque deseja fazer:  \n1.Criar arquivo \n2.Mover arquivos  \n3.Deletar arquivos  \n 4.Visualizar \n5.Sair")
         return escolha_do_menu
 def criar():
-        agora_para_pdf_jpg_png = datetime.now()
+        os.makedirs("Pdfs", exist_ok=True)
+        os.makedirs("Imagens", exist_ok=True)
+        os.makedirs("Imagens", exist_ok=True)
+        os.makedirs("Words", exist_ok=True)
         os.makedirs("Backup" , exist_ok=True)
         escolha_de_criar_arquivo= input("Qual tipo de arquivo deseja criar?:  \n1.Pdf  \n2.Jpg  \n3.Png  \n4.Word ")
-        match escolha_de_criar_arquivo:
+        nome_aplicado_aos_arquivos = input("Insira o nome que deseja dar ao arquivo:").lower()
+        agora = datetime.now().strftime("%d-%m-%Y_%H-%M")
+        try:
+                match escolha_de_criar_arquivo:
                         case "1": 
-                                os.makedirs("Pdfs", exist_ok=True)
-                                nome_aplicado_para_pdf = input("Insira o nome que deseja dar ao arquivo:").lower()
-                                conteudo_aplicado_dentro_pdf = input("Insira oque voce deseja colocar nele:")
-                                try:
-                                        with open(f"Pdfs/{nome_aplicado_para_pdf}__{agora_para_pdf_jpg_png:%d-%m-%Y_%H-%M}.pdf", "a" , encoding="utf-8") as arquviopdf:
-                                                arquviopdf.write(conteudo_aplicado_dentro_pdf + "\n")
-                                                print(f"O arquivo {nome_aplicado_para_pdf} foi criado")
-                                                shutil.copy2("Pdfs" , "Backup" , dirs_exist_ok=True)
-                                except Exception as e:
-                                                   print(f"Ops ocorreu um erro: {e}")
-                        case "2":
-                                os.makedirs("Imagens", exist_ok=True)
-                                nome_aplicado_para_jpg = input("Insira o nome que deseja dar ao arquivo:").lower()
-                                conteudo_aplicado_dentro_jpg = input("Arraste a imagem para aqui:").strip().replace('& ', '').replace('"', '').replace("'", "")
-                                agora_para_jpg = datetime.now().strftime("%d-%m-%Y_%H-%M")
-                                try:
-                                   foto_jpg = Image.open(conteudo_aplicado_dentro_jpg)
-                                   foto_colorida = foto_jpg.convert("RGB")
-                                   final_jpg = f"Imagens/{nome_aplicado_para_jpg}_{agora_para_jpg}.jpg"
-                                   foto_colorida.save(final_jpg , "JPEG")
-                                   print(f"A imagem {nome_aplicado_para_jpg} foi salva")
-                                   shutil.copy2("Imagens" , "Backup" , dirs_exist_ok=True)
+                                conteudo_pdf = input("Insira o que deseja colocar nele: ")
+                                caminho_final = f"Pdfs/{nome_aplicado_aos_arquivos}__{agora}.pdf"
+                                with open(caminho_final, "a", encoding="utf-8") as arquivo:
+                                        arquivo.write(conteudo_pdf + "\n")
 
+                        case "2" | "3":
+                                conteudo_img = limpar_caminho(input("Arraste a imagem para aqui: "))
+                                extensao = "jpg" if escolha_de_criar_arquivo == "2" else "png"
+                                caminho_final = f"Imagens/{nome_aplicado_aos_arquivos}_{agora}.{extensao}"
+                                with Image.open(conteudo_img) as Foto_convertida:
+                                        if escolha_de_criar_arquivo == "2":
+                                                Foto_convertida = Foto_convertida.convert("RGB")
+                                        Foto_convertida.save(caminho_final)
 
-                                except Exception as e:
-                                                 print(f"Ops ocorreu algum erro: {e}")
-                        case "3":
-                                os.makedirs("Imagens", exist_ok=True)
-                                nome_aplicado_para_png= input("Insira o nome que deseja dar ao arquivo:").lower()
-                                conteudo_aplicado_dentro_png= input("Arraste a imagem para aqui:").strip().replace('& ', '').replace('"', '').replace("'", "")
-                                agora_para_png = datetime.now().strftime("%d-%m-%Y_%H-%M")
-                                try:
-                                   foto_png = Image.open(conteudo_aplicado_dentro_png)
-                                   final_png = f"Imagens/{nome_aplicado_para_png}_{agora_para_png}.png"
-                                   foto_png.save(final_png, "PNG")
-                                   print(f"A imagem {nome_aplicado_para_png} foi salva")
-                                   shutil.copy2("Imagens" , "Backup" , dirs_exist_ok=True)
-                                except Exception as e:
-                                                 print(f"Ops ocorreu algum erro: {e}")
                         case "4":
-                                os.makedirs("Words", exist_ok=True)
-                                nome_aplicado_para_word = input("Insira o nome que deseja dar ao arquivo:").lower()
-                                conteudo_aplicado_dentro_jpg = input("Insira oque voce deseja colocar nele:")
-                                try:
-                                        with open(f"Words/{nome_aplicado_para_word}__{agora_para_pdf_jpg_png:%d-%m-%Y_%H-%M}.docx", "a" , encoding="utf-8") as arquvioword:
-                                                arquvioword.write(conteudo_aplicado_dentro_jpg + "\n")
-                                                shutil.copy2("Words" , "Backup" , dirs_exist_ok=True)
-                                                print(f"O arquivo {nome_aplicado_para_word} foi criado")  
-                                                
-                                               
-                                except Exception as e:
-                                        print(f"Ops ocorreu algum erro: {e}")                                    
+                                conteudo_word = input("Insira o que deseja colocar nele: ")
+                                caminho_final = f"Words/{nome_aplicado_aos_arquivos}__{agora}.docx"
+                                with open(caminho_final, "a", encoding="utf-8") as arquivo:
+                                        arquivo.write(conteudo_word + "\n")
+                        case _:
+                                print("Opção inválida")
+                                return 
+                print(f" O arquivo '{nome_aplicado_aos_arquivos}' foi criado!")
+                salvar_e_backup(os.path.dirname(caminho_final), caminho_final)
+        except Exception as e:
+                print(f"Ops, ocorreu um erro: {e}")
+
+                
+                                                        
+        except Exception as e:
+                print(f"Ops ouve algum erro: {e}")          
 def movera():
         escolha_mover_arquivo = input("Qual tipo de arquivo voce deseja mover?: \n1.Pdf  \n2.Jpg  \n3.Png  \n4.Word")
         if escolha_mover_arquivo in tipos_arquivos:
@@ -117,6 +102,12 @@ def visualizar():
                         print(f"Erro ao listar conteúdo: {e}")
         else:
              print("A pasta não foi encontrada!")
-
+def limpar_caminho(caminho):
+    for caractere in ['& ', '"', "'"]:
+        caminho = caminho.replace(caractere, '')
+    return caminho.strip()
+def salvar_e_backup(pasta, arquivo_origem):
+    os.makedirs("Backup", exist_ok=True)
+    shutil.copy2(arquivo_origem, "Backup")
         
 
