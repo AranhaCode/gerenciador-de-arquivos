@@ -104,12 +104,12 @@ def visualizar():
                         
                         if conteudo_arquivo:
                            print(f"\nConteúdo de '{escolha_visualizar}':\n")
-                        for item in conteudo_arquivo:
-                                conteudo_arquivo_completo = os.path.join(escolha_visualizar, item)
-                                if os.path.isdir(conteudo_arquivo_completo):
-                                  print(f"[PASTA] {item}")
-                                else:
-                                  print(f"[ARQUIVO] {item}")
+                           for item in conteudo_arquivo:
+                                        conteudo_arquivo_completo = os.path.join(escolha_visualizar, item)
+                                        if os.path.isdir(conteudo_arquivo_completo):
+                                         print(f"[PASTA] {item}")
+                                        else:
+                                         print(f"[ARQUIVO] {item}")
                         else:
                           print(f"A pasta '{escolha_visualizar}' está vazia!")
                           
