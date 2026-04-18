@@ -4,6 +4,7 @@ import os
 import shutil
 from PIL import Image
 from dados import tipos_arquivos
+import random
 def menu():
         print("="*40)
         print("MENU")
@@ -109,5 +110,67 @@ def limpar_caminho(caminho):
 def salvar_e_backup(pasta, arquivo_origem):
     os.makedirs("Backup", exist_ok=True)
     shutil.copy2(arquivo_origem, "Backup")
+def login():
+        tentativas = 0
+        os.makedirs("Senha e usuario", exist_ok=True)
+        caminho_usuario = "Senha e usuario/usuario.txt"
+        caminho_senha = "Senha e usuario/senha.txt"
+        while tentativas < 3:
+                perguntando_usuario_login = input("Voce possui um login?: [S/N]").lower()
+                if not os.path.exists(caminho_usuario):
+                        with open(caminho_usuario, "w") as f: pass
+                        with open(caminho_senha, "w") as f: pass
+                try:
+                                if perguntando_usuario_login == "s":
+                                        insirir_usuario = input("Insira seu nome de usuario:")
+                                        insirir_senha = input("Insira sua senha:")
+                                        with open(caminho_usuario , "r") as arquivo_usuario:
+                                                conteudo_usuario = arquivo_usuario.read().splitlines()
+                                        with open(caminho_senha , "r") as arquivo_senha:
+                                                conteudo_senha = arquivo_senha.read().splitlines()
+                                        if insirir_usuario in conteudo_usuario:
+                                                posicao = conteudo_usuario.index(insirir_usuario)
+                                                if insirir_senha == conteudo_senha[posicao]:
+                                                        print("Acesso liberado")
+                                                        print(f"Seja bem vindo {insirir_usuario}")
+                                                        return True
+                                                else:   
+                                                 print("Senha ou usuario incorretos")
+                                                 tentativas += 1
+                                        else:
+                                                print("Usuario nao encontrado")
+                                                tentativas += 1
+                                else:
+                                        pergunta_criar_login = input("Voce deseja criar um login?: [S/N]").lower()
+                                        if pergunta_criar_login == "s":
+                                                criar_nome_usuario = input("Digite o nome de usuario que deseja ter:")
+                                                if criar_nome_usuario == "":
+                                                        print("Nome invalido")
+                                                        continue
+                                                criar_senha_usuario = input("Digite a senha que daseja ter ou aperte [1] para gerar uma senha aleatoria A senha deve conter apenas numeros!!!:")
+                                                if criar_senha_usuario == "":
+                                                        print("Senha invalida")
+                                                        continue
+                                                if criar_senha_usuario == "1":
+                                                        criar_senha_usuario = str(random.randint(1000,10000))
+                                                        
+                                                with open(caminho_usuario , "a", encoding="utf-8") as arquivo:
+                                                        arquivo.write(criar_nome_usuario + "\n")
+                                                with open(caminho_senha , "a" , encoding="utf-8") as arquivo:
+                                                        arquivo.write(criar_senha_usuario  + "\n")
+                                                        print(f"Seu nome de usuario é {criar_nome_usuario} e sua senha é {criar_senha_usuario}")
+                except Exception as e:
+                        print(f"Ops ouve algum erro: {e}")
+                        break
+        print("\nTentativas esgotadas. Fechando programa por segurança.")
+        return False
+             
+
+
+                     
+
+                     
+
+
         
 
