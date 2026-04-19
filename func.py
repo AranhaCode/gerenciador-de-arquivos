@@ -107,7 +107,7 @@ def limpar_caminho(caminho):
     for caractere in ['& ', '"', "'"]:
         caminho = caminho.replace(caractere, '')
     return caminho.strip()
-def salvar_e_backup(pasta, arquivo_origem):
+def salvar_e_backup(arquivo_origem):
     os.makedirs("Backup", exist_ok=True)
     shutil.copy2(arquivo_origem, "Backup")
 def login():
