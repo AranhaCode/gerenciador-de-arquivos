@@ -48,12 +48,12 @@ def criar():
                 print(f" O arquivo '{nome_aplicado_aos_arquivos}' foi criado!")
                 salvar_e_backup(os.path.dirname(caminho_final), caminho_final)
         except Exception as e:
-                print(f"Ops, ocorreu um erro: {e}")
+                print(f"Ops ocorreu um erro: {e}")
 
                 
                                                         
         except Exception as e:
-                print(f"Ops ouve algum erro: {e}")          
+                print(f"Ops houve algum erro: {e}")          
 def movera():
         escolha_mover_arquivo = input("Qual tipo de arquivo voce deseja mover?: \n1.Pdf  \n2.Jpg  \n3.Png  \n4.Word")
         if escolha_mover_arquivo in tipos_arquivos:
@@ -66,7 +66,7 @@ def movera():
                         else:
                                 print("O arquivo nao foi encontrado")
                 except Exception as e:
-                        print(f"Ops ouve algum erro: {e}")
+                        print(f"Ops houve algum erro: {e}")
         else:
                 print("O arquivo nao existe ou pasta nao existe")                
 def deletar():
@@ -81,7 +81,7 @@ def deletar():
                                 else:
                                         print(f"O arquivo na foi encontrado")
                         except Exception as e:
-                                print(f"Ops ouve algum erro: {e}")
+                                print(f"Ops houve algum erro: {e}")
 def visualizar():
         escolha_visualizar = input("Digite a pasta que voce deseja visualizar:")
         if os.path.exists(escolha_visualizar):
@@ -160,7 +160,7 @@ def login():
                                                         arquivo.write(criar_senha_usuario  + "\n")
                                                         print(f"Seu nome de usuario é {criar_nome_usuario} e sua senha é {criar_senha_usuario}")
                 except Exception as e:
-                        print(f"Ops ouve algum erro: {e}")
+                        print(f"Ops houve algum erro: {e}")
                         break
         print("\nTentativas esgotadas. Fechando programa por segurança.")
         return False
